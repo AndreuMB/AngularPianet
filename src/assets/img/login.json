@@ -1,0 +1,12 @@
+{
+    "users": {
+        "id1":{
+            "name": "example",
+            "email": "example@email.com"
+        },
+        "id2":{
+            "name": "example",
+            "email": "example@email.com"
+        }
+    }
+}
