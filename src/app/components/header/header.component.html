@@ -3,13 +3,13 @@
     <a class="navbar-brand" href="#">Pianet</a>
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" id="welcome_link" [routerLink]="['home']">Home</a>
+            <a class="nav-link" [routerLink]="['home']">Home</a>
+        </li>
+        <li *ngIf="user" class="nav-item">
+            <a class="nav-link" [routerLink]="['sheets']">My Sheets</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="sheets_link" [routerLink]="['sheets']">My Sheets</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="compose_link" href="#">Compose</a>
+            <a class="nav-link" [routerLink]="['compose']">Compose</a>
         </li>
     </ul>
     <div *ngIf="user; else notLog" class="collapse navbar-collapse justify-content-end" id="userMenu">
@@ -18,7 +18,7 @@
             <a class="nav-link" id="profile" href="#">User</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="logout_link" href="#">Logout</a>
+            <a class="nav-link" (click)="logout()">Logout</a>
           </li>
         </ul>
     </div>

@@ -1,0 +1,6 @@
+<h1>COMPOSE</h1>
+<!-- <div id="stave_container" style="background-color: white;"></div> -->
+<div id="container">
+    <div style="background-color: white;" id="stave_container"></div>
+    <a *ngFor="let note of notes" class="btn btn-dark" (click)="print_note(note)">{{note}}</a>
+</div>

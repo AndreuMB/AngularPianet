@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SheetsComponent implements OnInit {
 
+  sheets:any;
+
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
 }

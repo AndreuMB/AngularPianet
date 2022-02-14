@@ -1,0 +1,31 @@
+<div class="container p-5">
+    <form id="login" method="POST" (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="email" 
+            required
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            [(ngModel)]="email"
+            #emailModel="ngModel"
+            [ngClass]="{
+                'is-valid': emailModel.touched && emailModel.valid,
+                'is-invalid': emailModel.touched && !emailModel.valid
+            }"
+        >
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password"
+            required
+            [(ngModel)]="psswd"
+            #psswdModel="ngModel"
+            [ngClass]="{
+                'is-valid': psswdModel.touched && psswdModel.valid,
+                'is-invalid': psswdModel.touched && !psswdModel.valid
+            }"
+        >
+        </div>
+        <button type="submit" class="btn btn-primary"
+        [disabled]="loginForm.invalid">Login</button>
+    </form>
+</div>

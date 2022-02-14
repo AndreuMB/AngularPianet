@@ -1,16 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
+  
+  logged = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private router: Router) { }
 
   registerAuth(dataJSON:{}):Observable<{}>{
-    
     // let datos = { ...dataJSON, returnSecureToken: true };
     let data1 = {}
     let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCFfIeHfupYXw89FUOMeorhfQrndz7iIck";
@@ -28,20 +31,34 @@ export class RegisterService {
   registerDB(dataJSON:{}):Observable<{}>{
     // console.log("datos return", datos);
     // let data1 = { "email" : dataJSON.email };
-    this.registerAuth(dataJSON);
     let url = "https://daw2022-64f58-default-rtdb.europe-west1.firebasedatabase.app/users/";
     let url2 = url+localStorage.getItem('localId')+".json?auth="+localStorage.getItem('idToken');
-
-    let datos2 = this.http.put<{}>(url2,JSON.stringify(dataJSON));
-
-    return datos2;
-
-
+    localStorage.removeItem('idToken');
+    localStorage.removeItem('localId');
+    return this.http.put<{}>(url2,JSON.stringify(dataJSON));
   }
-  // getAccess():{}{
-  //   const datos = {test: "test"};
-  //   console.log(datos);
-  //   return datos;
-  // }
+
+  login(data:{}):Observable<{}>{
+    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyACuNiwMT6WhLvr9G6HbMVhV4LfNFnAKzU";
+    
+    return this.http.post<{idToken:string, localId:string}>(url,JSON.stringify(data))
+    .pipe(
+      map(response => {
+        console.log("response", response);
+        localStorage.setItem('idToken',response.idToken);
+        localStorage.setItem('localId',response.localId);
+        this.logged.next(true);
+        return response;
+      })
+    );
+  }
+
+  logout(){
+    localStorage.removeItem('idToken');
+    localStorage.removeItem('localId');
+    this.logged.next(false);
+    this.router.navigate(['/home']);
+  }
+
   
 }
