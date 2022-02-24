@@ -5,10 +5,12 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SheetsComponent } from './components/sheets/sheets.component';
+import { SheetDetailsComponent } from './components/sheet-details/sheet-details.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'sheets', component: SheetsComponent},
+  {path: 'sheets/:id', component: SheetDetailsComponent},
   {path: 'compose', component: ComposeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},

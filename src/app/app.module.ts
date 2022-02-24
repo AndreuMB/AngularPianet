@@ -12,6 +12,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ComposeComponent } from './components/compose/compose.component';
+import { SheetDetailsComponent } from './components/sheet-details/sheet-details.component';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { ComposeComponent } from './components/compose/compose.component';
     SheetsComponent,
     LoginComponent,
     RegisterComponent,
-    ComposeComponent
+    ComposeComponent,
+    SheetDetailsComponent
   ],
   imports: [
     BrowserModule,

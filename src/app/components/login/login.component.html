@@ -24,6 +24,7 @@
                 'is-invalid': psswdModel.touched && !psswdModel.valid
             }"
         >
+        <p style="color: rgb(189, 59, 59);">{{ errormsg }}</p>
         </div>
         <button type="submit" class="btn btn-primary"
         [disabled]="loginForm.invalid">Login</button>

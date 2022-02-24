@@ -1,1 +1,39 @@
-<p>sheets works!</p>
+<h1 class="display-1 contental-center mb-5">MY SHEETS</h1>
+
+<div class="m-2 d-flex justify-content-around">
+    
+    <div *ngFor="let sheet of sheets" class="card" style="width: 18rem;">
+        <img [src]="secureUrl(sheet.img)" class="card-img-top img_card" alt="example-sheet">
+        <div class="card-body bg-dark">
+            <h5 class="card-title">{{sheet.title}}</h5>
+            <div class="d-flex justify-content-between">
+                <p class="card-text">Andreu Micó</p>
+                <a [routerLink]="['/sheets/'+sheet.id]" class="btn btn-primary">Play</a>
+                <a class="btn btn-danger" (click)="deleteSheet(sheet.id)">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card m-5" style="width: 18rem;">
+        <div class="card-img-top size_img" >
+            <img class="img_card" src="/assets/img/plus.png" alt="example-sheet">
+        </div>
+        <div class="card-body bg-dark new_body">
+            <form id="new_sheet" action="POST" (ngSubmit)="newSheet()" #loginForm="ngForm" novalidate>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="title" placeholder="title"
+                        required
+                        [(ngModel)]="title"
+                        #titleModel="ngModel"
+                        [ngClass]="{
+                            'is-valid': titleModel.touched && titleModel.valid,
+                            'is-invalid': titleModel.touched && !titleModel.valid
+                        }"
+                    >
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">New</button>
+            </form>
+        </div>
+    </div>
+
+</div>

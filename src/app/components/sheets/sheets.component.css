@@ -1,0 +1,11 @@
+.size_img{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.img_card{
+    width: 100%;
+    height: 250px;
+}

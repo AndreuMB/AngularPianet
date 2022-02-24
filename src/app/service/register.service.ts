@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, catchError } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -11,11 +11,14 @@ export class RegisterService {
   logged = new BehaviorSubject<boolean>(false);
 
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { 
+    if(localStorage.getItem('idToken')){
+      this.logged.next(true);
+    }
+  }
 
   registerAuth(dataJSON:{}):Observable<{}>{
     // let datos = { ...dataJSON, returnSecureToken: true };
-    let data1 = {}
     let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCFfIeHfupYXw89FUOMeorhfQrndz7iIck";
     return this.http.post<{idToken:string, localId:string}>(url,JSON.stringify(dataJSON))
     .pipe(
@@ -39,7 +42,7 @@ export class RegisterService {
   }
 
   login(data:{}):Observable<{}>{
-    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyACuNiwMT6WhLvr9G6HbMVhV4LfNFnAKzU";
+    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCFfIeHfupYXw89FUOMeorhfQrndz7iIck";
     
     return this.http.post<{idToken:string, localId:string}>(url,JSON.stringify(data))
     .pipe(
@@ -50,7 +53,7 @@ export class RegisterService {
         this.logged.next(true);
         return response;
       })
-    );
+    )
   }
 
   logout(){

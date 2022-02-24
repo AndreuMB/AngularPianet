@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
 
   email='';
   psswd='';
+  errormsg='';
 
   constructor(private registerService: RegisterService,private router: Router) { }
 
@@ -18,11 +19,21 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    let data = {"email":this.email,"password":this.psswd}
+    let data = {"email":this.email,"password":this.psswd, "returnSecureToken" : true}
+
   
-    this.registerService.login(data).subscribe(datos=>{
-      console.log(datos);
+    this.registerService.login(data).subscribe({next:datos=>{
+      console.log("enter");
+      console.log("datos " + datos);
       this.router.navigate(['/home']);
-    })
+    },
+    error:(error) => {
+      console.error('error caught in component')
+      this.errormsg="Email or password incorrect"
+    }})
+
+
+
+
   }
 }

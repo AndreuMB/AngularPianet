@@ -8,13 +8,12 @@ import { RegisterService } from '../../service/register.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  user: boolean= false;
+  user: boolean=false;
   constructor(private registerService: RegisterService,) { }
 
   ngOnInit(): void {
     this.registerService.logged.subscribe(l => {
       console.log("login= ",l);
-      
       this.user=l
     })
   }

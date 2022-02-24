@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SheetsService } from 'src/app/service/sheets.service';
 import Vex from "vexflow";
 
 @Component({
@@ -12,17 +13,49 @@ export class ComposeComponent implements OnInit {
   context:any;
   data:any;
 
-  constructor() { }
+  constructor(private sheetsService: SheetsService) { }
 
   ngOnInit(): void {
     // container
-    let container=document.querySelector('#container')!;
+    // let container=document.querySelector('#container')!;
     
-    // div
-    // let div = document.createElement('div');
-    // div.id='stave_container';
-    // container.append(div);
-    // div.style.backgroundColor='white';
+
+    
+    // ini void vars
+    let data:any = {
+      notesMeasurex : [],
+      notesComplete : [],
+      staveMeasurex : {},
+      timex : 10,
+      yStave : 0,
+      group : {},
+      div : document.querySelector("#stave_container"),
+    }
+    this.data = data;
+    this.getSheet();
+    // this.createSheet();
+    
+  }
+
+  getSheet(){
+    this.sheetsService.getSheet()
+    .subscribe({next:datos=>{
+      console.log("datos getSheet", datos);
+      this.createSheet();
+      if (datos.sheetNotes) {
+        this.data.notesComplete = datos.sheetNotes;
+        console.log("enter notes complete ", this.data.notesComplete);
+        this.data.notesComplete.forEach((element: any) => {
+          console.log(element.keys);
+          this.print_note(element.keys);
+        });
+      }
+    }})
+  }
+
+
+
+  createSheet(){
     let div:any = document.querySelector("#stave_container")!;
     
     
@@ -36,38 +69,21 @@ export class ComposeComponent implements OnInit {
     renderer.resize(div.offsetWidth, 700); // width and height to print notes
     
     // Get a drawing context:
-    let context:any = renderer.getContext();
-    this.context = context;
-    
-    // ini void vars
-    // let notesMeasurex:any = [];
-    // let notesComplete:any = [];
-    // let timex = 10; // x position time
-    // let yStave = 0; // position y of stave
-    // let group:any = {};
-    let data:any = {
-      notesMeasurex : [],
-      notesComplete : [],
-      staveMeasurex : {},
-      timex : 10,
-      yStave : 0,
-      group : {},
-      div : document.querySelector("#stave_container"),
-    }
-    this.data = data;
+    this.context = renderer.getContext();
     
     // let stave:any = [];
     // let song:any = []
 
     // time / set first stave position
-    data.staveMeasurex = new Vex.Flow.Stave(10,0,300);
+    this.data.staveMeasurex = new Vex.Flow.Stave(10,0,300);
   
-    data.staveMeasurex.addClef("treble").addTimeSignature("4/4");
-    data.staveMeasurex.setContext(context).draw(); // print stave/time
-    
+    this.data.staveMeasurex.addClef("treble").addTimeSignature("4/4");
+    this.data.staveMeasurex.setContext(this.context).draw(); // print stave/time
   }
 
   print_note(id:String){
+    console.log("print_note");
+    
     let data = this.data;
     let context = this.context;
     
@@ -87,13 +103,15 @@ export class ComposeComponent implements OnInit {
 
     // reload time
     if (data.notesMeasurex.length != 0) {
+      console.log("remove child");
+      
       context.svg.removeChild(data.group);
     }
     data.group = context.openGroup();
 
     // add note
-    data.notesMeasurex.push(new Vex.Flow.StaveNote({ keys: [""+id+"/4"], duration: "q" }));
-    data.notesComplete.push(new Vex.Flow.StaveNote({ keys: [""+id+"/4"], duration: "q" }));
+    data.notesMeasurex.push(new Vex.Flow.StaveNote({ keys: [id+"/4"], duration: "q" }));
+    data.notesComplete.push({ keys: id+"/4", duration: "q" });
 
     console.log('id = ' + id, " context = ", context + " data = " , data);
 
@@ -111,6 +129,33 @@ export class ComposeComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+
+  saveSheet(){
+    let svg = document.querySelector("svg")!;
+    console.log("svg " , svg);
+    
+    var xml = new XMLSerializer().serializeToString(svg);
+  
+    // make it base64
+    var svg64 = btoa(xml);
+    var b64Start = 'data:image/svg+xml;base64,';
+  
+    // prepend a "header"
+    let image64:any = b64Start + svg64;
+
+
+    console.log("image ", image64);
+    
+
+
+    this.sheetsService.saveSheet(this.data.notesComplete,image64)
+    .subscribe({next:datos=>{
+      console.log(datos);
+      
+    
+    }})
   }
   
 
