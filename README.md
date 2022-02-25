@@ -1,27 +1,32 @@
-# Pianet
+# PIANET
+El objecitu del projecte es una pàgina web on es pugen escriure i guardar partitures 
+amés de poder compartirles i descarregarles com en una red social.
+La aplicacio esta desplegada en webpack, utilitza Firebase de backend i Angular en el frontend.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
+## LLIBRERIES
+Llibreries més importants utilizades al projecte:
+- Webpack per desplegar el projecte
+- VexFlow per renderizar i manipular les partitures
+- Bootstrap per al css
+- rxjs per la programació reactiva
 
-## Development server
+## FIREBASE (BD)
+Les conexions i peticions a BD estan totes en la carpeta service.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## ESTRUCTURA
+Cada pàgina de la web es un component situat a la carpeta components amb el seu css, html i ts específic. Les dades de la BD se soliciten desde els fixers de la carpeta service, les interficies en la carpeta interfaces (en aquest cas sols e utilizat una). 
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## PÀGINES I FITXERS
+- app.component.html : Se encarrega de el routing per carregar les diferents pàgines de la aplicació.
+### COMPONENTS
+- compose : Per a compondre una partitura de manera dinàmica, si estas loggeat es pot guardar en la BD.
+- home : Primera pagina que es veu al accedir a la web. Esta inacabada amb dades de example, pero la intencio seria que mostrara partitures de la BD.
+- login : Login de la app necesites estar registrat, una vegada amb un compte pots gestionar les teues partitures.
+- register : Registre de la app per crearse el teu usuari.
+- sheets : (Necessites estar loggeat) Llista les teues partitures i permet crear més, borrarles i accedir a elles per modificarles.
+- sheet-details : (Necessites estar loggeat) Partitura de la BD on pots modificarla afegint notes en els botons que hi ha al peu de la pagina, per a guardar els canvis fer click en el botó save.
+### INTERFACES
+- sheets : Es la interficie utilitzada per guardar la informació de les partitures en BD i tractar les seues dade.
+### SERVICE
+- register : Totes les peticions a BD sobre els usuaris o les seues dades menys les partitures.
+- sheets : Totes les peticions sobre les partitures, he decidit fero en un fitxer diferent perque eren moltes peticions i el fitxer register es faria molt complex de llegir.
