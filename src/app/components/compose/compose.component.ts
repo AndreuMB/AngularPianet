@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { fromEvent, throttleTime } from 'rxjs';
 import { SheetsService } from 'src/app/service/sheets.service';
 import Vex from "vexflow";
 
@@ -34,39 +35,54 @@ export class ComposeComponent implements OnInit {
     this.data = data;
     this.getSheet();
     // this.createSheet();
+
+    const resizeObservable = fromEvent(window, "resize").pipe(throttleTime(100));
+
+  resizeObservable.subscribe((e) => {
+    this.data.div.innerHTML="";
+    this.createSheet();
+    console.log("resize ", this.data.notesComplete);
+    this.data.notesComplete.forEach((element: any) => {
+      console.log(element.keys);
+      this.print_note(element.keys,false);
+    });
+  })
     
   }
 
   getSheet(){
-    this.sheetsService.getSheet()
-    .subscribe({next:datos=>{
-      console.log("datos getSheet", datos);
-      this.createSheet();
-      if (datos.sheetNotes) {
-        this.data.notesComplete = datos.sheetNotes;
-        console.log("enter notes complete ", this.data.notesComplete);
-        this.data.notesComplete.forEach((element: any) => {
-          console.log(element.keys);
-          this.print_note(element.keys);
-        });
-      }
-    }})
+    this.createSheet();
+    if (localStorage.getItem("idSheet")) {
+      this.sheetsService.getSheet()
+      .subscribe({next:datos=>{
+        console.log("datos getSheet", datos);
+        if (datos.sheetNotes) {
+          this.data.notesComplete = datos.sheetNotes;
+          console.log("enter notes complete ", this.data.notesComplete);
+          this.data.notesComplete.forEach((element: any) => {
+            console.log(element.keys);
+            this.print_note(element.keys,false);
+          });
+        }
+      }})
+    }
+    
   }
 
 
-
   createSheet(){
-    let div:any = document.querySelector("#stave_container")!;
-    
+    this.data.notesMeasurex = [];
+    this.data.timex = 10;
+    this.data.yStave = 0;
     
     // COMPLEX VF
     
     let VF = Vex.Flow;    
     
-    let renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+    let renderer = new VF.Renderer(this.data.div, VF.Renderer.Backends.SVG);
     
     // Size our SVG:
-    renderer.resize(div.offsetWidth, 700); // width and height to print notes
+    renderer.resize(this.data.div.offsetWidth, 700); // width and height to print notes
     
     // Get a drawing context:
     this.context = renderer.getContext();
@@ -79,10 +95,11 @@ export class ComposeComponent implements OnInit {
   
     this.data.staveMeasurex.addClef("treble").addTimeSignature("4/4");
     this.data.staveMeasurex.setContext(this.context).draw(); // print stave/time
+    // this.data.notesMeasurex={};
   }
 
-  print_note(id:String){
-    console.log("print_note");
+  print_note(id:String,sw:boolean=true){
+    // console.log("print_note");
     
     let data = this.data;
     let context = this.context;
@@ -102,6 +119,8 @@ export class ComposeComponent implements OnInit {
 
 
     // reload time
+    console.log("data.notesMeasurex.length" , data.notesMeasurex.length);
+    
     if (data.notesMeasurex.length != 0) {
       console.log("remove child");
       
@@ -111,9 +130,11 @@ export class ComposeComponent implements OnInit {
 
     // add note
     data.notesMeasurex.push(new Vex.Flow.StaveNote({ keys: [id+"/4"], duration: "q" }));
-    data.notesComplete.push({ keys: id+"/4", duration: "q" });
+    if (sw) {
+      data.notesComplete.push({ keys: id+"/4", duration: "q" });
+    }
 
-    console.log('id = ' + id, " context = ", context + " data = " , data);
+    // console.log('id = ' + id, " context = ", context + " data = " , data);
 
     // print notes
     Vex.Flow.Formatter.FormatAndDraw(context, data.staveMeasurex, data.notesMeasurex);
@@ -134,7 +155,7 @@ export class ComposeComponent implements OnInit {
 
   saveSheet(){
     let svg = document.querySelector("svg")!;
-    console.log("svg " , svg);
+    // console.log("svg " , svg);
     
     var xml = new XMLSerializer().serializeToString(svg);
   
@@ -146,13 +167,14 @@ export class ComposeComponent implements OnInit {
     let image64:any = b64Start + svg64;
 
 
-    console.log("image ", image64);
+    // console.log("image ", image64);
     
 
-
+    console.log(this.data.notesComplete);
+    
     this.sheetsService.saveSheet(this.data.notesComplete,image64)
     .subscribe({next:datos=>{
-      console.log(datos);
+      // console.log(datos);
       
     
     }})

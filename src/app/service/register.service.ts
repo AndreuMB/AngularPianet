@@ -59,6 +59,8 @@ export class RegisterService {
   logout(){
     localStorage.removeItem('idToken');
     localStorage.removeItem('localId');
+    localStorage.removeItem("idSheet");
+
     this.logged.next(false);
     this.router.navigate(['/home']);
   }
