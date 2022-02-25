@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fromEvent, throttleTime } from 'rxjs';
+import { RegisterService } from 'src/app/service/register.service';
 import { SheetsService } from 'src/app/service/sheets.service';
 import Vex from "vexflow";
 
@@ -11,15 +12,21 @@ import Vex from "vexflow";
 export class ComposeComponent implements OnInit {
 
   notes = 'A,B,C,D,E,F,G'.split(',');
+  user: boolean=false;
   context:any;
   data:any;
 
-  constructor(private sheetsService: SheetsService) { }
+  constructor(private sheetsService: SheetsService,
+    private registerService: RegisterService) { }
 
   ngOnInit(): void {
     // container
     // let container=document.querySelector('#container')!;
-    
+    this.registerService.logged.subscribe(l => {
+      console.log(l);
+      console.log("login= ",l);
+      this.user=l
+    })
 
     
     // ini void vars

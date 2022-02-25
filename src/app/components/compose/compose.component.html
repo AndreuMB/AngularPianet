@@ -2,5 +2,5 @@
 <div id="container">
     <div style="background-color: white;" id="stave_container"></div>
     <a *ngFor="let note of notes" class="btn btn-dark" (click)="print_note(note)">{{note}}</a>
-    <a class="btn btn-primary" (click)="saveSheet()">Save</a>
+    <a *ngIf="user" class="btn btn-primary" (click)="saveSheet()">Save</a>
 </div>
