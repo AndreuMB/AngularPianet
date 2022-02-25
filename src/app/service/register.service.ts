@@ -17,6 +17,12 @@ export class RegisterService {
     }
   }
 
+  getUser():Observable<{username:string}>{
+    let url = "https://daw2022-64f58-default-rtdb.europe-west1.firebasedatabase.app/users/";
+    let url2 = url+localStorage.getItem('localId')+".json?auth="+localStorage.getItem('idToken');
+    return this.http.get<{username:string}>(url2);
+  }
+
   registerAuth(dataJSON:{}):Observable<{}>{
     // let datos = { ...dataJSON, returnSecureToken: true };
     let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCFfIeHfupYXw89FUOMeorhfQrndz7iIck";
