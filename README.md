@@ -14,7 +14,7 @@ Llibreries més importants utilizades al projecte:
 Les conexions i peticions a BD estan totes en la carpeta service.
 
 ## ESTRUCTURA
-Cada pàgina de la web es un component situat a la carpeta components amb el seu css, html i ts específic. Les dades de la BD se soliciten desde els fixers de la carpeta service, les interficies en la carpeta interfaces (en aquest cas sols e utilizat una). 
+Cada pàgina de la web es un component situat a la carpeta components amb el seu css, html i ts específic. Les dades de la BD se soliciten desde els fixers de la carpeta service, les interficies en la carpeta interfaces (en aquest cas sols e utilizat una) i les pipes personalizades en la carpeta pipes. 
 
 ## PÀGINES I FITXERS
 - app.component.html : Se encarrega de el routing per carregar les diferents pàgines de la aplicació.
@@ -30,3 +30,5 @@ Cada pàgina de la web es un component situat a la carpeta components amb el seu
 ### SERVICE
 - register : Totes les peticions a BD sobre els usuaris o les seues dades menys les partitures.
 - sheets : Totes les peticions sobre les partitures, he decidit fero en un fitxer diferent perque eren moltes peticions i el fitxer register es faria molt complex de llegir.
+### PIPES
+- sheet-title : Se encarrega de retornar una llista de Sheets que coinsidixquen amb un parametre string.
