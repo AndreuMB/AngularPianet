@@ -14,6 +14,7 @@ export class SheetsComponent implements OnInit {
 
   sheets!: Sheets[];
   title:string="";
+  filter:string="";
   constructor(private sheetsService: SheetsService,private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
