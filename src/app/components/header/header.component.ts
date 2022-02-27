@@ -10,7 +10,7 @@ import { RegisterService } from '../../service/register.service';
 export class HeaderComponent implements OnInit {
   user: boolean=false;
   username:string="";
-  constructor(private registerService: RegisterService,) { }
+  constructor(private registerService: RegisterService) { }
 
   ngOnInit(): void {
     this.registerService.logged.subscribe(l => {

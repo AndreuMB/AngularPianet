@@ -3,4 +3,5 @@ export interface Sheets {
     title: string;
     sheetNotes : any;
     img: string;
+    date: Date;
 }

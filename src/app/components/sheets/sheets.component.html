@@ -1,16 +1,22 @@
 <h1 class="display-1 contental-center mb-5">MY SHEETS</h1>
+<label for="filter">Filter: </label>
+<input type="text" name="filter" [(ngModel)]="filter">
 
 <div class="m-2 d-flex justify-content-around">
-    
-    <div *ngFor="let sheet of sheets" class="card" style="width: 18rem;">
+
+    <!-- custom pipe and ngStyle-->
+    <div *ngFor="let sheet of sheets | sheetTitle : filter;let i = index" class="card" style="width: 18rem;"
+    [ngStyle]="{'background-color': i%2==0?'grey':'lightgrey'}">
         <img [src]="secureUrl(sheet.img)" class="card-img-top img_card" alt="example-sheet">
         <div class="card-body bg-dark">
-            <h5 class="card-title">{{sheet.title}}</h5>
+            <h5 class="card-title">{{sheet.title | uppercase}}</h5>
             <div class="d-flex justify-content-between">
                 <p class="card-text">Andreu Micó</p>
-                <a [routerLink]="['/sheets/'+sheet.id]" class="btn btn-primary">Play</a>
-                <a class="btn btn-danger" (click)="deleteSheet(sheet.id)">Delete</a>
+                <!-- date pipe -->
+                <p class="card-text">{{ sheet.date | date:'dd/MM/y' }}</p>
             </div>
+            <a [routerLink]="['/sheets/'+sheet.id]" class="btn btn-primary">Play</a>
+            <a class="btn btn-danger" (click)="deleteSheet(sheet.id)">Delete</a>
         </div>
     </div>
 

@@ -57,7 +57,8 @@ export class SheetsService {
     +localStorage.getItem('localId')+"/sheets/";
     let url2 = url+sheet_id+".json?auth="+localStorage.getItem('idToken');
     console.log("url2 = " + url2);
+    console.log("date now = "+Date.now());
     
-    return this.http.patch<Sheets>(url2,JSON.stringify({"sheetNotes" : sheetNotes, "img" : img}));
+    return this.http.patch<Sheets>(url2,JSON.stringify({"sheetNotes" : sheetNotes, "img" : img, "date":Date.now()}));
   }
 }

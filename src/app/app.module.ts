@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ComposeComponent } from './components/compose/compose.component';
 import { SheetDetailsComponent } from './components/sheet-details/sheet-details.component';
+import { SheetTitlePipe } from './pipes/sheet-title.pipe';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { SheetDetailsComponent } from './components/sheet-details/sheet-details.
     LoginComponent,
     RegisterComponent,
     ComposeComponent,
-    SheetDetailsComponent
+    SheetDetailsComponent,
+    SheetTitlePipe
   ],
   imports: [
     BrowserModule,
